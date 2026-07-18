@@ -51,7 +51,7 @@ body.is-resizing .resizer{pointer-events:all!important;}
 .left{flex:0 0 40%;min-width:280px;max-width:72%;background:var(--surface);overflow:hidden;display:flex;flex-direction:column;border-top:3px solid var(--accent3);border-right:1px solid var(--border);}
 .li{padding:10px 14px;flex:1;overflow-y:auto;}
 
-/* 하단 고정 영역 (점수 + 버튼) */
+/* 하단 고정 영역 */
 .left-bottom{
   flex-shrink:0;
   background:var(--surface);
@@ -59,6 +59,32 @@ body.is-resizing .resizer{pointer-events:all!important;}
   box-shadow:0 -3px 12px rgba(26,35,50,.08);
   z-index:10;
 }
+/* sb2: 전체 너비 상단 */
+.sb2{background:var(--surface);padding:8px 14px 6px;}
+/* 버튼 행: 8:2 */
+.lb-btns{display:flex;gap:0;}
+.lb-btns .btn-g{flex:8;border-radius:0;margin:0;}
+.btn-collapse{
+  flex:2;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  background:var(--surface3);
+  border:none;
+  border-left:1px solid rgba(255,255,255,.15);
+  color:var(--text2);
+  font-size:10px;
+  font-weight:700;
+  font-family:inherit;
+  cursor:pointer;
+  transition:all .18s;
+  padding:0;
+}
+.btn-collapse:hover{background:var(--accent3);color:#fff;}
+.btn-collapse.expanded{background:var(--surface2);color:var(--accent3);}
+#collapse-ico{font-size:13px;line-height:1;}
 
 /* 섹션 레이블 */
 .sl{font-size:9px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:10px 0 7px;display:flex;align-items:center;gap:10px;}
@@ -220,7 +246,7 @@ input[type="date"]{min-width:0;}
 .sc span{font-size:13px;font-weight:400;color:var(--muted);}
 .bw{flex:1;height:7px;background:var(--surface3);border-radius:4px;overflow:hidden;border:1px solid var(--border);}
 .bf{height:100%;border-radius:4px;transition:width .5s cubic-bezier(.4,0,.2,1),background .4s;}
-.sm{font-size:10px;color:var(--muted);}
+.sm{font-size:10px;color:var(--muted);text-align:right;}
 .pass-lbl{font-size:10px;color:var(--muted);text-align:right;}
 
 /* 생성 버튼 */
@@ -229,13 +255,14 @@ input[type="date"]{min-width:0;}
 .btn-g:active{transform:scale(.99);}
 
 /* ── 오른쪽 패널 ── */
-.right{flex:1 1 0;min-width:200px;background:var(--bg);overflow-y:auto;padding:24px 28px;border-top:3px solid var(--accent);}
+.right{flex:1 1 0;min-width:200px;background:var(--bg);overflow-y:auto;padding:10px 20px 0;border-top:3px solid var(--accent);}
 
 /* 플레이스홀더 */
-.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:14px;text-align:center;}
-.placeholder .ico{font-size:52px;opacity:.18;}
-.placeholder h2{font-size:18px;font-weight:700;color:var(--text2);opacity:.5;}
-.placeholder p{font-size:12px;color:var(--muted);max-width:280px;line-height:1.7;}
+.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;text-align:center;padding:20px;}
+.placeholder .ico{font-size:40px;opacity:.18;}
+.ph-title{font-size:20px;font-weight:800;color:var(--text2);letter-spacing:-.5px;white-space:nowrap;}
+.ph-step{font-size:12px;color:var(--muted);white-space:nowrap;letter-spacing:-.2px;}
+.ph-rule{font-size:12px;color:var(--accent);font-weight:700;white-space:nowrap;}
 
 /* 로딩 */
 .ld{display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:18px;text-align:center;}
@@ -293,15 +320,15 @@ input[type="date"]{min-width:0;}
 
 /* 영역 점수 */
 .csg{gap:8px;}
-.cs{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:10px;text-align:center;transition:transform .15s;}
+.cs{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:6px 8px;display:flex;align-items:center;gap:6px;transition:transform .15s;}
 .cs:hover{transform:translateY(-1px);}
-.cs .cn{font-size:10px;color:var(--text2);margin-bottom:4px;line-height:1.4;font-weight:600;}
-.cs .cv{font-size:19px;font-weight:900;}
-.cs .cm{font-size:10px;color:var(--muted);}
+.cs .cn{font-size:10px;color:var(--text2);line-height:1.3;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cs .cv{font-size:16px;font-weight:900;white-space:nowrap;flex-shrink:0;}
+.cs .cm{font-size:9px;color:var(--muted);white-space:nowrap;flex-shrink:0;}
 
 /* 레이더 */
 .rw{display:flex;gap:20px;align-items:center;}
-.rl{flex:1;}
+.rl{flex:1;min-width:0;}
 .li2{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;color:var(--text2);}
 .lbw{flex:1;height:5px;background:var(--surface3);border-radius:3px;overflow:hidden;border:1px solid var(--border);}
 .lb2{height:100%;border-radius:3px;}
@@ -451,9 +478,9 @@ input[type="date"]{min-width:0;}
   display:flex;
   gap:8px;
   justify-content:flex-end;
-  padding:10px 0 14px;
-  border-bottom:1px solid var(--border);
-  margin-bottom:14px;
+  padding:14px 0 6px;
+  border-top:2px solid var(--border);
+  margin-top:6px;
 }
 .ra-btn{
   display:flex;
@@ -475,6 +502,26 @@ input[type="date"]{min-width:0;}
 .ra-save:hover{background:#164d85;box-shadow:0 3px 10px rgba(28,95,160,.35);}
 .ra-share{background:#FEE500;color:#3C1E1E;border-color:#FEE500;}
 .ra-share:hover{background:#fad900;box-shadow:0 3px 10px rgba(254,229,0,.4);}
+
+/* ── KSATP 바 차트 (프로파일 상단) ── */
+.ks-bars{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.ks-row{display:flex;align-items:center;gap:10px;}
+.ks-lbl{display:flex;align-items:center;gap:5px;width:90px;flex-shrink:0;font-size:11px;font-weight:700;color:var(--text2);}
+.ks-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.ks-nm{font-weight:500;color:var(--muted);font-size:10px;}
+.ks-bw{flex:1;height:7px;background:var(--surface3);border-radius:4px;overflow:hidden;border:1px solid var(--border);}
+.ks-bf{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.ks-pct{width:34px;text-align:right;font-size:11px;font-weight:800;flex-shrink:0;}
+
+/* ── KSATP 미니 바차트 (KSATP 레이더 우측) ── */
+.ks-mini{display:flex;flex-direction:column;justify-content:center;gap:9px;flex:1;min-width:0;}
+.ks-mini-row{display:flex;align-items:center;gap:5px;}
+.ks-mini-dot{width:6px;height:6px;border-radius:2px;flex-shrink:0;}
+.ks-mini-lbl{font-size:10px;font-weight:800;width:52px;flex-shrink:0;white-space:nowrap;}
+.ks-mini-kr{font-size:9px;font-weight:500;color:var(--muted);margin-left:2px;}
+.ks-mini-bw{flex:1;height:5px;background:var(--surface3);border-radius:3px;overflow:hidden;border:1px solid var(--border);}
+.ks-mini-bf{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.ks-mini-pct{font-size:10px;font-weight:700;width:28px;text-align:right;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -541,33 +588,28 @@ input[type="date"]{min-width:0;}
     </div>
     <div class="sm" id="lm">0개 축 평가됨</div>
   </div>
-  <button class="btn-g" onclick="gen()">⚡ AI 디브리핑 보고서 생성</button>
+  <div class="lb-btns">
+    <button class="btn-g" onclick="gen()">⚡ AI 디브리핑 보고서 생성</button>
+    <button class="btn-collapse" id="btn-collapse" onclick="collapseAll()" title="모든 평가항목 접기">
+      <span id="collapse-ico">⬆</span>
+      <span id="collapse-txt">접기</span>
+    </button>
+  </div>
 </div>
 </div>
 <div class="resizer" id="resizer" title="드래그하여 너비 조절"></div>
 <div class="right">
   <div class="placeholder" id="ph" style="display:flex">
     <div class="ico">📋</div>
-    <h2>평가 완료 후 보고서를 생성하세요</h2>
-    <p>급수 탭 선택 → 교육생 정보 입력 → 평가 진행 → 보고서 생성</p>
-    <p style="color:var(--accent);font-size:12px;margin-top:10px;font-weight:600;">★ 주요지표(★) 2개 이상 과락 없이 합격점 이상 달성 시 합격</p>
+    <h2 class="ph-title">평가 완료 후 보고서를 생성하세요</h2>
+    <p class="ph-step">급수 탭 선택 → 교육생 정보 입력 → 평가 진행 → 보고서 생성</p>
+    <p class="ph-rule">★ 주요지표 2개 이상 과락 없이 합격점 이상 달성 시 합격</p>
   </div>
   <div class="ld" id="ld"><div class="sp"></div>
     <div style="font-size:14px;color:var(--muted)">AI가 K·S·A·T·P 역량을 분석하고 있습니다...</div>
     <div style="font-size:11px;color:var(--dim)">지표해설·체크리스트 + SOP 기반 종합 분석 중</div>
   </div>
-  <div id="ro"><div class="rpt-actions">
-  <button class="ra-btn ra-print" onclick="window.print()" title="인쇄/PDF 저장">
-    🖨️ <span>인쇄/PDF</span>
-  </button>
-  <button class="ra-btn ra-save" onclick="saveReport()" title="보고서 저장 (DB 연동 예정)">
-    💾 <span>저장</span>
-  </button>
-  <button class="ra-btn ra-share" onclick="shareReport()" title="카카오톡으로 보고서 공유 (연동 예정)">
-    📤 <span>공유</span>
-  </button>
-</div>
-<div id="rc3"></div></div>
+  <div id="ro"><div id="rc3"></div></div>
 </div>
 </div>
 <script>
@@ -736,6 +778,14 @@ function sw(g){
   document.getElementById('ro').classList.remove('on');
   document.getElementById('ld').classList.remove('on');
   document.getElementById('ld').style.display='none';
+  // 접기 버튼 상태 초기화
+  _allCollapsed=false;
+  const ico=document.getElementById('collapse-ico');
+  const txt=document.getElementById('collapse-txt');
+  const btn=document.getElementById('btn-collapse');
+  if(ico) ico.textContent='⬆';
+  if(txt) txt.textContent='접기';
+  if(btn) btn.classList.remove('expanded');
 }
 
 // ── 개략 평정(상/중/하) → KSATP 자동 설정 매핑 ──
@@ -972,18 +1022,47 @@ ${ed}
 
 전문 교수의 권위 있고 건설적인 어조로 작성하세요. 체크리스트 항목을 구체적으로 인용하세요.`;
 
+  // 로딩 표시
   document.getElementById('ph').style.display='none';
   document.getElementById('ro').classList.remove('on');
   document.getElementById('ld').classList.add('on');
   document.getElementById('ld').style.display='flex';
+
   let ai='';
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,
-        messages:[{role:'user',content:prompt}]})});
-    const d=await res.json();ai=d.content?.[0]?.text||'분석 오류';
-  }catch(e){ai='⚠️ AI 연결 오류. 네트워크를 확인해주세요.';}
+    ai = await callAI(prompt);
+  }catch(e){
+    ai='⚠️ AI 연결 오류: '+e.message;
+  }
+// ── API 엔드포인트 설정 ──
+// GitHub Pages 배포 시: Cloudflare Worker URL로 변경하세요
+// 예) const API_URL = 'https://my-proxy.myname.workers.dev';
+// 로컬/직접 실행 시: 'https://api.anthropic.com/v1/messages' 사용
+const API_URL = (()=>{
+  const host = location.hostname;
+  if(host === '' || host === 'localhost' || host === '127.0.0.1') {
+    // 로컬: 직접 호출
+    return 'https://api.anthropic.com/v1/messages';
+  }
+  // GitHub Pages 등 외부 배포: Worker URL 필요
+  // ↓ 아래 URL을 본인 Cloudflare Worker 주소로 교체하세요
+  return 'REPLACE_WITH_YOUR_WORKER_URL';
+})();
+
+async function callAI(prompt) {
+  if(API_URL === 'REPLACE_WITH_YOUR_WORKER_URL') {
+    return '⚠️ GitHub Pages 배포 감지: Cloudflare Worker URL을 설정해야 AI 분석을 사용할 수 있습니다.\n\n📋 설정 방법:\n1. cloudflare-worker.js 파일을 Cloudflare Workers에 배포\n2. vr_debriefing_v3.html 내 API_URL의 REPLACE_WITH_YOUR_WORKER_URL을 Worker URL로 교체\n3. Worker 환경변수에 ANTHROPIC_API_KEY 등록';
+  }
+  const res = await fetch(API_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,
+      messages:[{role:'user',content:prompt}]})
+  });
+  const d = await res.json();
+  if(!res.ok) throw new Error(d.error?.message || `HTTP ${res.status}`);
+  return d.content?.[0]?.text || '분석 오류';
+}
 
   const sc=tot>=grade.pass?'var(--good)':tot>=grade.pass*.75?'var(--warn)':'var(--bad)';
   const aA={};AX.forEach(ax=>{aA[ax]=aC[ax]>0?(aT[ax]/aC[ax]/3*100).toFixed(0):0;});
@@ -1030,18 +1109,21 @@ ${ed}
   </div>
   <div class="sec">
     <div class="sec-t"><span>📊</span> K·S·A·T·P 역량 프로파일</div>
-    <div class="ks">${AX.map(ax=>{const p=parseInt(aA[ax]);const cl=p>=80?'var(--good)':p>=60?'var(--warn)':'var(--bad)';
-      return`<div class="kc" style="border-color:${AXC[ax]}44;border:1px solid ${AXC[ax]}44">
-        <div class="al" style="color:${AXC[ax]}">${ax}·${AXL[ax]}</div>
-        <div class="av" style="color:${cl}">${p}<span style="font-size:11px;font-weight:400;color:var(--muted)">%</span></div>
-        <div class="am">달성률</div></div>`;}).join('')}
-    </div>
     <div class="rw">
-      <canvas id="rc4" width="160" height="160" style="flex-shrink:0"></canvas>
+      <canvas id="rc4" width="150" height="150" style="flex-shrink:0"></canvas>
       <div class="rl">${catR.map(c=>{const p=Math.round(c.score/c.max*100);const cl=p>=80?'var(--good)':p>=60?'var(--warn)':'var(--bad)';
-        return`<div class="li2"><span>${c.ico}</span><span style="min-width:80px;font-size:11px">${c.name}</span>
+        return`<div class="li2"><span>${c.ico}</span><span style="min-width:60px;font-size:11px">${c.name}</span>
         <div class="lbw"><div class="lb2" style="width:${p}%;background:${cl}"></div></div>
         <div class="lp" style="color:${cl}">${p}%</div></div>`;}).join('')}
+      </div>
+      <canvas id="rc5" width="150" height="150" style="flex-shrink:0"></canvas>
+      <div class="ks-mini">${AX.map(ax=>{const p=parseInt(aA[ax]);const cl=p>=80?'var(--good)':p>=60?'var(--warn)':'var(--bad)';
+        return`<div class="ks-mini-row">
+          <span class="ks-mini-dot" style="background:${AXC[ax]}"></span>
+          <span class="ks-mini-lbl" style="color:${AXC[ax]}">${ax}<span class="ks-mini-kr"> ${AXL[ax]}</span></span>
+          <div class="ks-mini-bw"><div class="ks-mini-bf" style="width:${p}%;background:${AXC[ax]}"></div></div>
+          <span class="ks-mini-pct" style="color:${cl}">${p}%</span>
+        </div>`;}).join('')}
       </div>
     </div>
   </div>
@@ -1050,13 +1132,13 @@ ${ed}
     <div class="csg" style="display:grid;grid-template-columns:repeat(${colN},1fr);gap:7px">
       ${catR.map(c=>{const cl=c.score/c.max>=.8?'var(--good)':c.score/c.max>=.6?'var(--warn)':'var(--bad)';
         return`<div class="cs" style="${c.score/c.max<.6?'border-color:var(--bad)':''}">
-          <div class="cn">${c.ico} ${c.name}</div>
-          <div class="cv" style="color:${cl}">${c.score}</div>
-          <div class="cm">/ ${c.max}점</div></div>`;}).join('')}
+          <span class="cn" style="flex:1">${c.ico} ${c.name}</span>
+          <span class="cv" style="color:${cl}">${c.score}</span>
+          <span class="cm">/${c.max}</span></div>`;}).join('')}
       <div class="cs" style="border-color:${sc}">
-        <div class="cn">🏆 총점</div>
-        <div class="cv" style="color:${sc}">${tot}</div>
-        <div class="cm">/ ${grade.max}점</div></div>
+        <span class="cn" style="flex:1">🏆 총점</span>
+        <span class="cv" style="color:${sc}">${tot}</span>
+        <span class="cm">/${grade.max}</span></div>
     </div>
   </div>
   <div class="sec">
@@ -1068,6 +1150,11 @@ ${ed}
     <div id="dt-acc-wrap">${buildDtAcc(iD)}</div>
   </div>
   ${bldQ(iD)}
+  <div class="rpt-actions">
+    <button class="ra-btn ra-print" onclick="window.print()">🖨️ <span>인쇄/PDF</span></button>
+    <button class="ra-btn ra-save" onclick="saveReport()">💾 <span>저장</span></button>
+    <button class="ra-btn ra-share" onclick="shareReport()">📤 <span>공유</span></button>
+  </div>
 `;
 
   document.getElementById('ld').classList.remove('on');
@@ -1075,6 +1162,7 @@ ${ed}
   document.getElementById('ro').classList.add('on');
   document.getElementById('rc3').innerHTML=html;
   drawR(catR);
+  drawKSATP(aA);
 }
 
 function eH(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1396,23 +1484,72 @@ function bldQ(iD){
   </div>`;
 }
 
+// ── 영역별 레이더 차트 ──
 function drawR(cats){
   const cv=document.getElementById('rc4');if(!cv)return;
   const ctx=cv.getContext('2d');
-  const W=160,H=160,cx=80,cy=80,R=58,n=cats.length;
+  const W=150,H=150,cx=75,cy=75,R=54,n=cats.length;
   ctx.clearRect(0,0,W,H);
+  // 격자
   for(let r=1;r<=4;r++){
     ctx.beginPath();
     for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;const x=cx+R*(r/4)*Math.cos(a),y=cy+R*(r/4)*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
-    ctx.closePath();ctx.strokeStyle='rgba(45,55,72,.7)';ctx.lineWidth=1;ctx.stroke();
+    ctx.closePath();ctx.strokeStyle='rgba(180,196,216,.6)';ctx.lineWidth=1;ctx.stroke();
   }
-  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(45,55,72,.4)';ctx.stroke();}
-  ctx.font='11px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;ctx.fillText(cats[i].ico,cx+(R+14)*Math.cos(a),cy+(R+14)*Math.sin(a));}
+  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(180,196,216,.4)';ctx.stroke();}
+  // 레이블
+  ctx.font='10px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;ctx.fillStyle='#6B7E9B';ctx.fillText(cats[i].ico,cx+(R+13)*Math.cos(a),cy+(R+13)*Math.sin(a));}
+  // 데이터
   ctx.beginPath();
   for(let i=0;i<n;i++){const p=cats[i].score/cats[i].max;const a=(i/n)*Math.PI*2-Math.PI/2;const x=cx+R*p*Math.cos(a),y=cy+R*p*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
-  ctx.closePath();ctx.fillStyle='rgba(230,57,70,.2)';ctx.fill();ctx.strokeStyle='#e63946';ctx.lineWidth=2;ctx.stroke();
-  for(let i=0;i<n;i++){const p=cats[i].score/cats[i].max;const a=(i/n)*Math.PI*2-Math.PI/2;ctx.beginPath();ctx.arc(cx+R*p*Math.cos(a),cy+R*p*Math.sin(a),4,0,Math.PI*2);ctx.fillStyle='#e63946';ctx.fill();}
+  ctx.closePath();ctx.fillStyle='rgba(214,43,43,.15)';ctx.fill();ctx.strokeStyle='#D62B2B';ctx.lineWidth=2;ctx.stroke();
+  for(let i=0;i<n;i++){const p=cats[i].score/cats[i].max;const a=(i/n)*Math.PI*2-Math.PI/2;ctx.beginPath();ctx.arc(cx+R*p*Math.cos(a),cy+R*p*Math.sin(a),3,0,Math.PI*2);ctx.fillStyle='#D62B2B';ctx.fill();}
+}
+
+// ── K·S·A·T·P 다이아몬드 레이더 차트 ──
+function drawKSATP(aA){
+  const cv=document.getElementById('rc5');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const W=150,H=150,cx=75,cy=75,R=52,n=5;
+  const axes=['K','S','A','T','P'];
+  const cols={K:'#2563EB',S:'#D97706',A:'#059669',T:'#7C3AED',P:'#DB2777'};
+  ctx.clearRect(0,0,W,H);
+  // 격자 (오각형)
+  for(let r=1;r<=4;r++){
+    ctx.beginPath();
+    for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;const x=cx+R*(r/4)*Math.cos(a),y=cy+R*(r/4)*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+    ctx.closePath();ctx.strokeStyle='rgba(180,196,216,.6)';ctx.lineWidth=1;ctx.stroke();
+  }
+  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(180,196,216,.4)';ctx.stroke();}
+  // 축 레이블 (K·S·A·T·P 색상)
+  ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  for(let i=0;i<n;i++){
+    const a=(i/n)*Math.PI*2-Math.PI/2;
+    ctx.fillStyle=cols[axes[i]];
+    ctx.fillText(axes[i],cx+(R+14)*Math.cos(a),cy+(R+14)*Math.sin(a));
+  }
+  // 데이터 폴리곤
+  const vals=axes.map(ax=>parseInt(aA[ax]||0)/100);
+  ctx.beginPath();
+  for(let i=0;i<n;i++){const a=(i/n)*Math.PI*2-Math.PI/2;const x=cx+R*vals[i]*Math.cos(a),y=cy+R*vals[i]*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+  ctx.closePath();
+  // 그라데이션 채우기
+  const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,R);
+  grad.addColorStop(0,'rgba(67,97,238,.35)');
+  grad.addColorStop(1,'rgba(67,97,238,.08)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.strokeStyle='#2563EB';ctx.lineWidth=2;ctx.stroke();
+  // 꼭짓점 점 (각 축 색상)
+  for(let i=0;i<n;i++){
+    const a=(i/n)*Math.PI*2-Math.PI/2;
+    const x=cx+R*vals[i]*Math.cos(a),y=cy+R*vals[i]*Math.sin(a);
+    ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);
+    ctx.fillStyle=cols[axes[i]];ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+  }
+  // 중심 점
+  ctx.beginPath();ctx.arc(cx,cy,3,0,Math.PI*2);ctx.fillStyle='rgba(67,97,238,.4)';ctx.fill();
 }
 
 // ── 패널 리사이저 ──
@@ -1496,42 +1633,84 @@ function drawR(cats){
 })();
 
 // ── 초기화: 현재 급수 평가 전체 리셋 ──
+// ── 전체 접기/펼치기 ──
+let _allCollapsed = false;
+function collapseAll(){
+  const grade = G[cg];
+  _allCollapsed = !_allCollapsed;
+  grade.cats.forEach(cat => {
+    const catEl = document.getElementById('c-' + cat.id);
+    if(!catEl) return;
+    if(_allCollapsed){
+      catEl.classList.remove('op');
+      cat.items.forEach(item => {
+        document.getElementById('it-' + item.id)?.classList.remove('detail-open');
+      });
+    } else {
+      catEl.classList.add('op');
+    }
+  });
+  const ico = document.getElementById('collapse-ico');
+  const txt = document.getElementById('collapse-txt');
+  const btn = document.getElementById('btn-collapse');
+  if(_allCollapsed){
+    ico.textContent='⬇'; txt.textContent='펼치기'; btn.classList.add('expanded');
+  } else {
+    ico.textContent='⬆'; txt.textContent='접기'; btn.classList.remove('expanded');
+  }
+}
+
 function resetAll(){
   const gLabel={b:'초급(선착대장)',i:'중급(지휘팀장)',a:'고급(대응단장)'}[cg];
-  if(!confirm(gLabel+' 평가를 모두 초기화하시겠습니까?\n입력한 평정이 모두 삭제됩니다.'))return;
+  if(!confirm('['+gLabel+'] 초기화\n\n아래 내용이 모두 삭제됩니다:\n• 교육생 정보 입력값\n• 교관 관찰 메모\n• 전체 K·S·A·T·P 평정\n\n계속하시겠습니까?'))return;
+
+  // ① 평정 데이터 초기화
   R[cg]={};
-  // 모든 평정 버튼 초기화
+
+  // ② 교육생 정보 폼 초기화
+  ['fcourse','fnum','fn','fq','fi'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  document.getElementById('fd').value=new Date().toISOString().slice(0,10);
+  const fr=document.getElementById('fr'); if(fr) fr.selectedIndex=0;
+  const fs=document.getElementById('fs'); if(fs) fs.selectedIndex=0;
+
+  // ③ 교관 관찰 메모 초기화
+  const fno=document.getElementById('fno'); if(fno) fno.value='';
+
+  // ④ 평정 버튼 UI 초기화
   const grade=G[cg];
   grade.cats.forEach(cat=>{
     cat.items.forEach(item=>{
-      // KSATP 버튼
       ['K','S','A','T','P'].forEach(ax=>{
         ['상','중','하'].forEach(v=>{
           document.getElementById('b-'+item.id+'-'+ax+'-'+v)?.classList.remove('s-'+v);
         });
       });
-      // 개략 버튼
       ['상','중','하'].forEach(v=>{
         const b=document.getElementById('q-'+item.id+'-'+v);
         if(b) b.className='';
       });
-      // 점수 표시
       const qs=document.getElementById('qs-'+item.id);
       if(qs) qs.textContent='—';
+      document.getElementById('it-'+item.id)?.classList.remove('detail-open');
     });
+    const cb=document.getElementById('cb-'+cat.id);
+    if(cb) cb.textContent='0/'+cat.max;
+    document.getElementById('c-'+cat.id)?.classList.remove('op');
   });
-  // 카테고리 점수 초기화
-  grade.cats.forEach(cat=>{
-    const el=document.getElementById('cb-'+cat.id);
-    if(el) el.textContent='0/'+cat.max;
-  });
+
+  // ⑤ 점수 바 갱신
   updateLive();
-  // 보고서 패널 리셋
-  document.getElementById('ph').style.display='flex';
+
+  // ⑥ 보고서 패널 리셋
+  const ph=document.getElementById('ph');
+  ph.style.display='flex'; ph.className='placeholder';
   document.getElementById('ro').classList.remove('on');
   document.getElementById('ld').classList.remove('on');
   document.getElementById('ld').style.display='none';
-  console.log('[초기화] '+gLabel+' 평가 초기화 완료');
+  document.getElementById('rc3').innerHTML='';
 }
 
 // ── 저장: DB 연동 예정 ──
