@@ -531,7 +531,7 @@ input[type="date"]{min-width:0;}
 </head>
 <body>
 <header class="hdr">
-  <div class="hdr-badge">FDTS v3</div>
+  <div class="hdr-badge">ICTC v3</div>
   <h1>🚒 VR 현장지휘 디브리핑 시스템</h1>
   <div class="sub">초급·중급·고급 통합 | K·S·A·T·P 5축 | SOP+지표해설+체크리스트 기반</div>
 </header>
@@ -967,6 +967,36 @@ function updateLive(){
   bf.style.background=tot>=grade.pass?'var(--good)':tot>=grade.pass*.75?'var(--warn)':'var(--bad)';
 }
 
+// ── API 엔드포인트 설정 ──
+// GitHub Pages 배포 시: Cloudflare Worker URL로 변경하세요
+// 예) const API_URL = 'https://my-proxy.myname.workers.dev';
+// 로컬/직접 실행 시: 'https://api.anthropic.com/v1/messages' 사용
+const API_URL = (()=>{
+  const host = location.hostname;
+  if(host === '' || host === 'localhost' || host === '127.0.0.1') {
+    // 로컬: 직접 호출
+    return 'https://api.anthropic.com/v1/messages';
+  }
+  // GitHub Pages 등 외부 배포: Worker URL 필요
+  // ↓ 아래 URL을 본인 Cloudflare Worker 주소로 교체하세요
+  return 'https://still-rain-ec27.jkseo1974.workers.dev';
+})();
+
+async function callAI(prompt) {
+  if(API_URL === 'https://still-rain-ec27.jkseo1974.workers.dev') {
+    return '⚠️ GitHub Pages 배포 감지: Cloudflare Worker URL을 설정해야 AI 분석을 사용할 수 있습니다.\n\n📋 설정 방법:\n1. cloudflare-worker.js 파일을 Cloudflare Workers에 배포\n2. vr_debriefing_v3.html 내 API_URL의 https://still-rain-ec27.jkseo1974.workers.dev을 Worker URL로 교체\n3. Worker 환경변수에 ANTHROPIC_API_KEY 등록';
+  }
+  const res = await fetch(API_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,
+      messages:[{role:'user',content:prompt}]})
+  });
+  const d = await res.json();
+  if(!res.ok) throw new Error(d.error?.message || `HTTP ${res.status}`);
+  return d.content?.[0]?.text || '분석 오류';
+}
+
 async function gen(){
   const grade=G[cg];
   const name=document.getElementById('fn').value||'미입력';
@@ -1042,36 +1072,6 @@ ${ed}
   }catch(e){
     ai='⚠️ AI 연결 오류: '+e.message;
   }
-// ── API 엔드포인트 설정 ──
-// GitHub Pages 배포 시: Cloudflare Worker URL로 변경하세요
-// 예) const API_URL = 'https://my-proxy.myname.workers.dev';
-// 로컬/직접 실행 시: 'https://api.anthropic.com/v1/messages' 사용
-const API_URL = (()=>{
-  const host = location.hostname;
-  if(host === '' || host === 'localhost' || host === '127.0.0.1') {
-    // 로컬: 직접 호출
-    return 'https://api.anthropic.com/v1/messages';
-  }
-  // GitHub Pages 등 외부 배포: Worker URL 필요
-  // ↓ 아래 URL을 본인 Cloudflare Worker 주소로 교체하세요
-  return 'https://still-rain-ec27.jkseo1974.workers.dev';
-})();
-
-async function callAI(prompt) {
-  if(API_URL === 'https://still-rain-ec27.jkseo1974.workers.dev') {
-    return '⚠️ GitHub Pages 배포 감지: Cloudflare Worker URL을 설정해야 AI 분석을 사용할 수 있습니다.\n\n📋 설정 방법:\n1. cloudflare-worker.js 파일을 Cloudflare Workers에 배포\n2. vr_debriefing_v3.html 내 API_URL의 https://still-rain-ec27.jkseo1974.workers.dev을 Worker URL로 교체\n3. Worker 환경변수에 ANTHROPIC_API_KEY 등록';
-  }
-  const res = await fetch(API_URL, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,
-      messages:[{role:'user',content:prompt}]})
-  });
-  const d = await res.json();
-  if(!res.ok) throw new Error(d.error?.message || `HTTP ${res.status}`);
-  return d.content?.[0]?.text || '분석 오류';
-}
-
   const sc=tot>=grade.pass?'var(--good)':tot>=grade.pass*.75?'var(--warn)':'var(--bad)';
   const aA={};AX.forEach(ax=>{aA[ax]=aC[ax]>0?(aT[ax]/aC[ax]/3*100).toFixed(0):0;});
   const gAc=cg==='b'?'var(--cb)':cg==='i'?'var(--ci)':'var(--ca)';
