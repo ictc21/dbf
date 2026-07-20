@@ -983,9 +983,6 @@ const API_URL = (()=>{
 })();
 
 async function callAI(prompt) {
-  if(API_URL === 'https://still-rain-ec27.jkseo1974.workers.dev') {
-    return '⚠️ GitHub Pages 배포 감지: Cloudflare Worker URL을 설정해야 AI 분석을 사용할 수 있습니다.\n\n📋 설정 방법:\n1. cloudflare-worker.js 파일을 Cloudflare Workers에 배포\n2. vr_debriefing_v3.html 내 API_URL의 https://still-rain-ec27.jkseo1974.workers.dev을 Worker URL로 교체\n3. Worker 환경변수에 ANTHROPIC_API_KEY 등록';
-  }
   const res = await fetch(API_URL, {
     method:'POST',
     headers:{'Content-Type':'application/json'},
