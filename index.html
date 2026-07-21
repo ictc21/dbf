@@ -259,6 +259,7 @@ input[type="date"]{min-width:0;}
 /* ── 오른쪽 패널 ── */
 .right{flex:1 1 0;min-width:200px;background:var(--bg);overflow-y:auto;padding:10px 20px 0;border-top:3px solid var(--accent);}
 
+
 /* 플레이스홀더 */
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;text-align:center;padding:20px;}
 .placeholder .ico{font-size:40px;opacity:.18;}
@@ -437,6 +438,195 @@ input[type="date"]{min-width:0;}
   .sec,.rh{border-color:#ccc!important;box-shadow:none!important;}
 }
 
+/* ══════════════════════════════════
+   모바일 반응형 (768px 이하)
+══════════════════════════════════ */
+@media (max-width: 768px) {
+  /* 헤더 */
+  .hdr { padding: 0 12px; height: 46px; gap: 8px; }
+  .hdr h1 { font-size: 13px; letter-spacing: -.2px; }
+  .hdr-badge { font-size: 8px; padding: 3px 6px; letter-spacing: 1px; }
+  .hdr .sub { display: none; }
+
+  /* 급수 탭 - 스크롤 가능 */
+  .grade-tabs {
+    padding: 0 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    flex-wrap: nowrap;
+  }
+  .grade-tabs::-webkit-scrollbar { display: none; }
+  .gtab { padding: 10px 14px; font-size: 12px; white-space: nowrap; }
+  .btn-reset { margin: 0 6px 0 0; padding: 4px 10px; font-size: 10px; white-space: nowrap; }
+
+  /* ── 모바일 패널 전환 탭 ── */
+  .mobile-panel-tabs {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 46px;
+    z-index: 150;
+    box-shadow: var(--sh-sm);
+  }
+  .mpt-btn {
+    flex: 1;
+    padding: 10px 8px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all .18s;
+  }
+  .mpt-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: rgba(214,43,43,.04);
+  }
+
+  /* 레이아웃: 세로 스택 */
+  .layout {
+    display: block;
+    height: auto;
+    overflow: visible;
+  }
+  .resizer { display: none; }
+
+  /* 패널 전환 */
+  .left {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    border-top: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .left.mobile-hidden { display: none; }
+
+  .right {
+    width: 100%;
+    min-height: 50vh;
+    padding: 10px 12px 0;
+    border-top: 3px solid var(--accent);
+  }
+  .right.mobile-hidden { display: none; }
+
+  /* 왼쪽 패널 내부 스크롤 해제 */
+  .li { overflow-y: visible; }
+  .left-bottom { position: static; }
+
+  /* 점수 바 + 생성 버튼 고정 */
+  .left-bottom {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+  }
+
+  /* 정보 그리드: 모바일에서 2열→2열 유지, 입력 크기 키우기 */
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .info-grid input,
+  .info-grid select,
+  .info-grid textarea {
+    font-size: 14px;
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+  .ig-course { grid-column: 1 / -1; }
+
+  /* 폼 입력 터치 최적화 */
+  .fg input, .fg select, .fg textarea {
+    font-size: 14px;
+    padding: 9px 11px;
+    min-height: 40px;
+  }
+
+  /* 개략 평정 버튼 - 터치 크기 */
+  .iq-btns button {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 34px;
+  }
+  .iq-expand {
+    padding: 5px 10px;
+    font-size: 10px;
+    min-height: 30px;
+  }
+
+  /* K·S·A·T·P 평정 버튼 */
+  .kbs button {
+    width: 36px;
+    height: 28px;
+    font-size: 11px;
+  }
+  .krow { padding: 7px 10px; }
+  .kd { font-size: 11px; }
+
+  /* 카테고리 헤더 */
+  .ch { padding: 13px 14px; }
+  .ch h3 { font-size: 13px; }
+
+  /* 점수 표시 */
+  .sc { font-size: 24px; }
+  .btn-g { font-size: 15px; padding: 14px 16px; }
+
+  /* 보고서 영역 */
+  .ks { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .kc .av { font-size: 18px; }
+  .sg { grid-template-columns: 1fr; gap: 8px; }
+  .rh-row { flex-direction: column; gap: 10px; }
+  .rh-right { text-align: left; }
+  .rs { font-size: 32px; }
+  .rpt-actions { flex-wrap: wrap; gap: 6px; }
+  .ra-btn { padding: 9px 14px; font-size: 12px; flex: 1 1 calc(50% - 6px); justify-content: center; }
+
+  /* 보고서 액션 바 */
+  .rac { flex-wrap: wrap; gap: 6px; }
+  .bp { font-size: 12px; padding: 8px 12px; flex: 1 1 calc(50% - 6px); text-align: center; }
+
+  /* 평가 안내 */
+  .eval-tip { font-size: 12px; }
+
+  /* 레이더 */
+  .rw { flex-direction: column; gap: 12px; }
+  .rl { width: 100%; }
+
+  /* 플레이스홀더 */
+  .ph-title { font-size: 16px; }
+  .placeholder .ico { font-size: 32px; }
+
+  /* 스크롤바 숨김 */
+  .li::-webkit-scrollbar { display: none; }
+}
+
+/* 더 좁은 화면 (480px 이하) */
+@media (max-width: 480px) {
+  .hdr h1 { font-size: 12px; }
+  .grade-tabs { padding: 0 4px; }
+  .gtab { padding: 9px 10px; font-size: 11px; }
+  .info-grid { grid-template-columns: 1fr 1fr; gap: 5px; }
+  .ks { grid-template-columns: repeat(3, 1fr); }
+  .ra-btn { flex: 1 1 100%; }
+  .bp { flex: 1 1 100%; }
+  .kbs button { width: 32px; height: 26px; font-size: 10px; }
+  .iq-btns button { padding: 5px 9px; }
+}
+
 /* 교관 관찰 메모 (평가항목 하단) */
 .memo-field{
   width:100%;
@@ -542,8 +732,18 @@ input[type="date"]{min-width:0;}
   <div style="flex:1"></div>
   <button class="btn-reset" onclick="resetAll()" title="현재 급수 평가 초기화">🔄 초기화</button>
 </div>
+<!-- 모바일 전용: 패널 전환 탭 -->
+<div class="mobile-panel-tabs" id="mpt" style="display:none">
+  <button class="mpt-btn active" id="mpt-left" onclick="switchMobilePanel('left')">
+    📋 평가 입력
+  </button>
+  <button class="mpt-btn" id="mpt-right" onclick="switchMobilePanel('right')">
+    📄 AI 보고서
+  </button>
+</div>
+
 <div class="layout">
-<div class="left">
+<div class="left" id="panel-left">
 <div class="li">
   <div class="sl">교육생 정보</div>
   <div class="info-grid">
@@ -603,7 +803,7 @@ input[type="date"]{min-width:0;}
 </div>
 </div>
 <div class="resizer" id="resizer" title="드래그하여 너비 조절"></div>
-<div class="right">
+<div class="right" id="panel-right">
   <div class="placeholder" id="ph" style="display:flex">
     <div class="ico">📋</div>
     <h2 class="ph-title">평가 완료 후 보고서를 생성하세요</h2>
@@ -1168,6 +1368,10 @@ ${ed}
   document.getElementById('rc3').innerHTML=html;
   drawR(catR);
   drawKSATP(aA);
+  // 모바일에서 보고서 패널로 자동 전환
+  if(window.innerWidth<=768 && typeof switchMobilePanel==='function'){
+    switchMobilePanel('right');
+  }
 }
 
 function eH(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1764,6 +1968,63 @@ function shareReport(){
 
 sw('b');
 document.getElementById('fd').value=new Date().toISOString().slice(0,10);
+
+// ── 모바일 패널 전환 ──
+(function(){
+  const mpt = document.getElementById('mpt');
+  const panelLeft = document.getElementById('panel-left');
+  const panelRight = document.getElementById('panel-right');
+  const btnLeft = document.getElementById('mpt-left');
+  const btnRight = document.getElementById('mpt-right');
+
+  function isMobile(){ return window.innerWidth <= 768; }
+
+  function applyMobileLayout(){
+    if(isMobile()){
+      mpt.style.display = 'flex';
+      // 현재 활성 패널 유지
+      const active = btnLeft.classList.contains('active') ? 'left' : 'right';
+      switchMobilePanel(active);
+    } else {
+      mpt.style.display = 'none';
+      panelLeft.classList.remove('mobile-hidden');
+      panelRight.classList.remove('mobile-hidden');
+    }
+  }
+
+  window.switchMobilePanel = function(which){
+    if(which === 'left'){
+      panelLeft.classList.remove('mobile-hidden');
+      panelRight.classList.add('mobile-hidden');
+      btnLeft.classList.add('active');
+      btnRight.classList.remove('active');
+    } else {
+      panelLeft.classList.add('mobile-hidden');
+      panelRight.classList.remove('mobile-hidden');
+      btnRight.classList.add('active');
+      btnLeft.classList.remove('active');
+    }
+  };
+
+  // 보고서 생성 후 자동으로 오른쪽 패널로 전환
+  const origGenReport = window.genReport;
+  if(typeof origGenReport === 'function'){
+    window.genReport = function(){
+      origGenReport.apply(this, arguments);
+      if(isMobile()) setTimeout(()=>switchMobilePanel('right'), 300);
+    };
+  }
+
+  // 리사이즈 감지
+  let resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(applyMobileLayout, 100);
+  });
+
+  // 초기 적용
+  applyMobileLayout();
+})();
 </script>
 </body>
 </html>
