@@ -64,6 +64,27 @@ body.is-resizing .resizer{pointer-events:all!important;}
 /* 버튼 행: 8:2 */
 .lb-btns{display:flex;gap:0;}
 .lb-btns .btn-g{flex:8;border-radius:0;margin:0;}
+.btn-g:disabled{opacity:.6;cursor:wait;}
+/* AI 활용 체크박스 (기본 해제) */
+.ai-opt{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:0 12px;
+  background:var(--surface3);
+  border-right:1px solid var(--border);
+  color:var(--text2);
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  user-select:none;
+  white-space:nowrap;
+  transition:all .18s;
+}
+.ai-opt:hover{background:var(--surface2);}
+.ai-opt input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer;margin:0;}
+.ai-opt.on{background:rgba(214,43,43,.10);color:var(--accent);}
 .btn-collapse{
   flex:2;
   display:flex;
@@ -738,7 +759,7 @@ input[type="date"]{min-width:0;}
     📋 평가 입력
   </button>
   <button class="mpt-btn" id="mpt-right" onclick="switchMobilePanel('right')">
-    📄 AI 보고서
+    📄 보고서
   </button>
 </div>
 
@@ -794,7 +815,11 @@ input[type="date"]{min-width:0;}
     <div class="sm" id="lm">0개 축 평가됨</div>
   </div>
   <div class="lb-btns">
-    <button class="btn-g" onclick="gen()">⚡ AI 디브리핑 보고서 생성</button>
+    <label class="ai-opt" id="ai-opt" title="체크 시 AI 역량 종합 분석 포함 (생성 시간·토큰 사용량 증가)">
+      <input type="checkbox" id="use-ai" onchange="toggleAI()">
+      <span>AI 활용</span>
+    </label>
+    <button class="btn-g" id="btn-gen" onclick="gen()">📄 디브리핑 보고서 생성</button>
     <button class="btn-collapse" id="btn-collapse" onclick="collapseAll()" title="모든 평가항목 접기">
       <span id="collapse-ico">⬆</span>
       <span id="collapse-txt">접기</span>
@@ -1194,7 +1219,17 @@ async function callAI(prompt) {
   return d.content?.[0]?.text || '분석 오류';
 }
 
+// ── AI 활용 체크박스 → 버튼 문구 전환 ──
+function toggleAI(){
+  const on=document.getElementById('use-ai').checked;
+  document.getElementById('ai-opt').classList.toggle('on',on);
+  document.getElementById('btn-gen').textContent=on?'⚡ AI 디브리핑 보고서 생성':'📄 디브리핑 보고서 생성';
+}
+
 async function gen(){
+  const useAI=document.getElementById('use-ai').checked;
+  const btnGen=document.getElementById('btn-gen');
+  if(btnGen.disabled)return; // AI 분석 중 중복 호출 방지
   const grade=G[cg];
   const name=document.getElementById('fn').value||'미입력';
   const rank=document.getElementById('fr').value||'계급미입력';
@@ -1257,17 +1292,22 @@ ${ed}
 
 전문 교수의 권위 있고 건설적인 어조로 작성하세요. 체크리스트 항목을 구체적으로 인용하세요.`;
 
-  // 로딩 표시
   document.getElementById('ph').style.display='none';
-  document.getElementById('ro').classList.remove('on');
-  document.getElementById('ld').classList.add('on');
-  document.getElementById('ld').style.display='flex';
 
+  // AI 활용 체크 시에만 API 호출 (기본: 호출 없이 즉시 생성)
   let ai='';
-  try{
-    ai = await callAI(prompt);
-  }catch(e){
-    ai='⚠️ AI 연결 오류: '+e.message;
+  if(useAI){
+    document.getElementById('ro').classList.remove('on');
+    document.getElementById('ld').classList.add('on');
+    document.getElementById('ld').style.display='flex';
+    btnGen.disabled=true;
+    try{
+      ai = await callAI(prompt);
+    }catch(e){
+      ai='⚠️ AI 연결 오류: '+e.message;
+    }finally{
+      btnGen.disabled=false;
+    }
   }
   const sc=tot>=grade.pass?'var(--good)':tot>=grade.pass*.75?'var(--warn)':'var(--bad)';
   const aA={};AX.forEach(ax=>{aA[ax]=aC[ax]>0?(aT[ax]/aC[ax]/3*100).toFixed(0):0;});
@@ -1346,10 +1386,10 @@ ${ed}
         <span class="cm">/${grade.max}</span></div>
     </div>
   </div>
-  <div class="sec">
+  ${useAI?`<div class="sec">
     <div class="sec-t"><span>🤖</span> AI 역량 종합 분석 (K·S·A·T·P · 체크리스트 기반)</div>
     ${rAI(ai)}
-  </div>
+  </div>`:''}
   <div class="sec">
     <div class="sec-t"><span>📋</span> 행동지표 × K·S·A·T·P 세부 평정</div>
     <div id="dt-acc-wrap">${buildDtAcc(iD)}</div>
@@ -1954,7 +1994,7 @@ function saveReport(){
 function shareReport(){
   const name=document.getElementById('fn').value||'미입력';
   const rptVisible=document.getElementById('ro').classList.contains('on');
-  if(!rptVisible){alert('먼저 AI 디브리핑 보고서를 생성해주세요.');return;}
+  if(!rptVisible){alert('먼저 디브리핑 보고서를 생성해주세요.');return;}
   // TODO: 카카오톡 API 연동
   // Kakao.Share.sendDefault({ ... })
   const msg='📋 VR 현장지휘 디브리핑 보고서\n\n교육생: '+name
